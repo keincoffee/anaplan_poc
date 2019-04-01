@@ -1,5 +1,8 @@
+const fs = require("fs");
 const mapboxgl = require("mapbox-gl");
 mapboxgl.accessToken = "pk.eyJ1IjoibWFwbWFuMjciLCJhIjoiY2p0N21rZTduMHRjbzQ0cDM4aWEzNnZoNCJ9.0W1yZ5oX3dChiUD6AFAUSw";
+const csvTojson = require("csvtojson");
+const ZipsPath = './data/ZipCode.csv'
 const segmentInsert = require("@mapbox/segmentio-insert");
 const analytics = segmentInsert("fl0c8p240n");
 analytics.track("Demo Viewed", {
@@ -36,6 +39,11 @@ const map = new mapboxgl.Map({
 });
 map.on("load", () => {
   console.log("Map is ready");
+
+//csvTojson Import
+  csvTojson().fromFile(ZipsPath).then(function(zips){
+console.log(zips);
+});
 
   axios.get('https://api-beta.anaplan.com/mapbox/1/lists/zips')
     .then(function (response) {
