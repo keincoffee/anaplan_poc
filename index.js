@@ -40,24 +40,28 @@ const map = new mapboxgl.Map({
 map.on("load", () => {
   console.log("Map is ready");
 
-//csvTojson Import
-//csvTojson().fromFile(ZipsPath).then(function(zips){
-//console.log(zips);
-//});
-
+  	//new import with Sam backend
 	axios.get('http://localhost:3001/getcsv')
 	.then(function(response) {
-	console.log(response.data)
+		zipData = response.data	
+ for (var i = 0; i < zipData.length; i++) {
+      zipData[i].field1 = 'USP4' + zipData[i].field1  
+    };
+    console.log('update', zipData)
+		
 	});
 
-  axios.get('https://api-beta.anaplan.com/mapbox/1/lists/zips')
-    .then(function (response) {
-      zipData = response.data
-      // console.log(zipData)
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  
+
+//console.log('update', zipData);
+  //axios.get('https://api-beta.anaplan.com/mapbox/1/lists/zips')
+    //.then(function (response) {
+      //zipData = response.data
+      //console.log(zipData)
+    //})
+    //.catch(function (error) {
+      //console.log(error);
+    //});
 
   axios.get('https://api-beta.anaplan.com/mapbox/1/lists/flat-list')
     .then(function (response) {
@@ -396,7 +400,7 @@ map.on("load", () => {
       }
       zipRegionArray.push(newZip)
     })
-    // console.log('zip code array', zipcodeArray)
+    //console.log('zip code array', zipcodeArray)
 
     centroids.features.forEach(k => {
       let centroid = {
