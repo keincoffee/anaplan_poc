@@ -53,8 +53,7 @@ map.on("load", () => {
 
   
 
-//console.log('update', zipData);
-  //axios.get('https://api-beta.anaplan.com/mapbox/1/lists/zips')
+ //axios.get('https://api-beta.anaplan.com/mapbox/1/lists/zips')
     //.then(function (response) {
       //zipData = response.data
       //console.log(zipData)
@@ -356,9 +355,9 @@ map.on("load", () => {
     function getDiff() {
       let changedParent = []
       zipData.forEach(k => {
-        if (k.Parent != region_lookup[k.Zips] && k.Zips != "USP4") {
+        if (k.Parent != region_lookup[k.field1] && k.field1 != "USP4") {
           // console.log(k)
-          k.Parent = region_lookup[k.Zips]
+          k.Parent = region_lookup[k.field1]
           changedParent.push(k)
         }
       })
@@ -396,7 +395,7 @@ map.on("load", () => {
     zipData.forEach(f => {
       zipcodeArray.push(f)
       let newZip = {
-        [f.Zips]: f.Parent
+        [f.field1]: f.Parent
       }
       zipRegionArray.push(newZip)
     })
