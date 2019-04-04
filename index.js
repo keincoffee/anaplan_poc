@@ -45,14 +45,22 @@ map.on("load", () => {
 	.then(function(response) {
 		zipData = response.data	
  for (var i = 0; i < zipData.length; i++) {
-      zipData[i].field1 = 'USP4' + zipData[i].field1  
+      zipData[i].field1 = 'USP4' + zipData[i].field1;  
     };
-    console.log('update', zipData)
+    //console.log('update', zipData)
 		
 	});
 
+  axios.get('http://localhost:3003/getacct')
+    .then(function (response) {
+      data = response.data
+      for (var i = 0; i < data.length; i++) {
+      data[i].Zip_Code = 'USP4' + data[i].Zip_Code; 
+    };
+      //console.log('data', data)
+      initmap();
+    });
   
-
  //axios.get('https://api-beta.anaplan.com/mapbox/1/lists/zips')
     //.then(function (response) {
       //zipData = response.data
@@ -62,16 +70,16 @@ map.on("load", () => {
       //console.log(error);
     //});
 
-  axios.get('https://api-beta.anaplan.com/mapbox/1/lists/flat-list')
-    .then(function (response) {
-      data = response.data
-      // console.log('data', data)
-      initmap();
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
+  /*axios.get('https://api-beta.anaplan.com/mapbox/1/lists/flat-list')
+   * .then(function (response) {
+    *  data = response.data
+     * console.log('data', data)
+     * initmap();
+    *})
+    *.catch(function (error) {
+    *  console.log(error);
+    *});
+	*/
   for (var key in lookupTable.p4.data.all) {
     lookupTableArray.push({
       [key]: lookupTable.p4.data.all[key].id_int
@@ -365,7 +373,7 @@ map.on("load", () => {
       // document.querySelector('.api-post').style.visibility = 'visible'
       // document.querySelector('.spin-div').style.visibility = 'visible'
       console.log('finished')
-      axios.post('https://api-beta.anaplan.com/mapbox/1/lists/zips', changedParent)
+      axios.post('http://localhost:3001/getcsv', changedParent)
         // console.log('sending request')
         .then(function (response) {
           // console.log(response)
@@ -392,6 +400,7 @@ map.on("load", () => {
     // console.log('zipdata', zipData)
 
     //Create Lookup Tables
+    //Edited 4/3 for new zip data
     zipData.forEach(f => {
       zipcodeArray.push(f)
       let newZip = {
@@ -424,7 +433,7 @@ map.on("load", () => {
 
     const postal4poly_domain = [];
     // console.log
-    // console.log('postal4groups', postal4_groups)
+    //console.log('postal4groups', postal4_groups)
     postal4_groups.forEach(k => {
       postal4poly_domain.push(Object.values(k)[0]);
     });
@@ -432,8 +441,8 @@ map.on("load", () => {
     let postal4_colorStops = [];
     const postal4_filter = ["in", "id"];
 
-
-    // console.log('poly 4 domain', postal4poly_domain)
+//console.log('poly 4 domain', postal4poly_domain)
+    
     const postal4_domain = chroma.limits(postal4poly_domain, "k", 10).slice(0, 9);
     const postal4_scale = chroma.scale(chroma.brewer.YlGnBu).domain(postal4_domain).mode("lab");
 
