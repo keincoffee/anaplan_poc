@@ -41,7 +41,7 @@ map.on("load", () => {
   console.log("Map is ready");
 
   	//new import with Sam backend
-	axios.get('http://localhost:3001/getcsv')
+	axios.get('http://localhost:3003/getzip')
 	.then(function(response) {
 		zipData = response.data	
  for (var i = 0; i < zipData.length; i++) {
@@ -360,6 +360,7 @@ map.on("load", () => {
     }
 
     //Function to track whether or not regions where changed
+    //changed to field1 for new import
     function getDiff() {
       let changedParent = []
       zipData.forEach(k => {
@@ -369,11 +370,23 @@ map.on("load", () => {
           changedParent.push(k)
         }
       })
-      // console.log(changedParent)
+      //remove USP4 from field1 value and add 'US-' to parent value
+      for (var i = 0; i < changedParent.length; i++){
+        changedParent[i].field1 = changedParent[i].field1.replace('USP4', '');
+        changedParent[i].Parent = 'US-' + changedParent[i].Parent;
+        };
+      //function to remove `field1` object key`
+      function rename(obj, from, to) {
+        obj[to] = obj[from];
+        delete obj[from];
+      }
+      changedParent.forEach(obj => rename(obj, 'field1', ''));
+
+      console.log(changedParent)
       // document.querySelector('.api-post').style.visibility = 'visible'
       // document.querySelector('.spin-div').style.visibility = 'visible'
       console.log('finished')
-      axios.post('http://localhost:3001/getcsv', changedParent)
+      axios.post('http://localhost:3003/sendcsv/receive', changedParent)
         // console.log('sending request')
         .then(function (response) {
           // console.log(response)
