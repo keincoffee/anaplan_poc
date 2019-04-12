@@ -40,27 +40,36 @@ const map = new mapboxgl.Map({
 map.on("load", () => {
   console.log("Map is ready");
 
+zipimport();
+acctimport();
   	//new import with Sam backend
-	axios.get('http://localhost:3003/getzip')
-	.then(function(response) {
-		zipData = response.data	
- for (var i = 0; i < zipData.length; i++) {
-      zipData[i].field1 = 'USP4' + zipData[i].field1;  
-    };
-    //console.log('update', zipData)
-		
-	});
-
-  axios.get('http://localhost:3003/getacct')
+  function zipimport(){
+    axios.get('http://52.12.189.217:3003/getzip')
+    .then(function(response) {
+      zipData = response.data  
+   for (var i = 0; i < zipData.length; i++) {
+        zipData[i].field1 = 'USP4' + zipData[i].field1;  
+      };
+      //console.log('update', zipData)
+      
+    });
+  };
+  function acctimport(){
+  axios.get('http://52.12.189.217:3003/getacct')
     .then(function (response) {
       data = response.data
       for (var i = 0; i < data.length; i++) {
       data[i].Zip_Code = 'USP4' + data[i].Zip_Code; 
     };
-      //console.log('data', data)
+      //console.log('data', data)  
       initmap();
     });
-  
+  };
+
+setInterval(zipimport, 60000);
+//setInterval(acctimport, 60000);
+
+
  //axios.get('https://api-beta.anaplan.com/mapbox/1/lists/zips')
     //.then(function (response) {
       //zipData = response.data
@@ -386,7 +395,7 @@ map.on("load", () => {
       // document.querySelector('.api-post').style.visibility = 'visible'
       // document.querySelector('.spin-div').style.visibility = 'visible'
       console.log('finished')
-      axios.post('http://localhost:3003/sendcsv/receive', changedParent)
+      axios.post('http://52.12.189.217:3003/sendcsv/receive', changedParent)
         // console.log('sending request')
         .then(function (response) {
           // console.log(response)
