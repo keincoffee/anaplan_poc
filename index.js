@@ -1,6 +1,6 @@
 //const fs = require("fs");
 const mapboxgl = require("mapbox-gl");
-mapboxgl.accessToken = "pk.eyJ1IjoibWFwbWFuMjciLCJhIjoiY2p0N21rZTduMHRjbzQ0cDM4aWEzNnZoNCJ9.0W1yZ5oX3dChiUD6AFAUSw";
+mapboxgl.accessToken = ;
 const csvTojson = require("csvtojson");
 //const ZipsPath = './data/ZipCode.csv'
 const segmentInsert = require("@mapbox/segmentio-insert");
